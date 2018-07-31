@@ -1,0 +1,71 @@
+/* theme color css */
+/* document outline ----------------------------------------- */
+body{
+  background-color: #fe8;
+}
+#container{
+  background-color: #fe8;
+}
+#timercontainer{
+  background-color: #fe8;
+}
+.infotext{
+  color: #000;
+}
+.score{
+  background-color: #ed4;
+  color: #000;
+}
+.updownbtn{
+  background-color: #dec;
+  border: 2px solid #d76;
+  color: #000;
+}
+.oparationbtn{
+  background-color: #dec;
+  border: 2px solid #d76;
+  color: #000;
+}
+.disable{
+  background-color: #ddd;
+  border: 2px solid #aaa;
+  color: #aaa;
+}
+.pauseinfo{
+  background-color: #ded;
+  color: #b59;
+}
+.lose{
+  color: #f00;
+}
+/* settingwindow decorations ------------------------------------- */
+#settingwindow{
+  background-color: #fda;
+}
+.popupwindow{
+  border: 2px solid #b33;
+}
+.popuptitle{
+  background-color: #cbd;
+  color: #000;
+}
+/* toggle switch ----------------------------------------- */
+.slider {
+  background-color: #aaa;
+}
+.slider:before {
+  background-color: #fff;
+}
+input:checked + .slider {
+  background-color: #832;
+}
+/* Segmented Control ----------------------------------------- */
+.segmented .label {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    color: #777;
+}
+.segmented input:checked + .label {
+    background-color: #832;
+    color: #fff;
+}

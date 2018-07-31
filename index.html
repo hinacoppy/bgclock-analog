@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta name="description" content="Clock and Score board App for Backgammon player">
+  <meta name="author" content="(C)hinacoppy 2018">
+  <link rel="stylesheet" href="css/bgclock-analog.css">
+  <link rel="stylesheet" href="css/theme_warm.css" id="themecss">
+  <link rel="icon" href="./favicon.ico">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <title>bgclock_analog</title>
+</head>
+<body>
+
+<!-- downloaded from https://soundeffect-lab.info/ -->
+<audio id="tap"    src="sounds/decision1.mp3" preload="auto"></audio>
+<audio id="pause"  src="sounds/decision7.mp3" preload="auto"></audio>
+<audio id="buzzer" src="sounds/warning2.mp3"  preload="auto"></audio>
+
+<div id="container">
+ <div id="player1" class="infotext">Player1</div>
+ <div id="player2" class="infotext">Player2</div>
+
+ <div id="score1container" class="scorecontainer">
+  <span id="score1dn" class="updownbtn">&lt;</span>
+  <span id="score1" class="score">4</span>
+  <span id="score1up" class="updownbtn">&gt;</span>
+ </div>
+
+ <div id="score2container" class="scorecontainer">
+  <span id="score2dn" class="updownbtn">&lt;</span>
+  <span id="score2" class="score">3</span>
+  <span id="score2up" class="updownbtn">&gt;</span>
+ </div>
+
+ <div id="gamemode" class="infotext">Match game to 5</div>
+ <div id="crawford" class="infotext">Post crawford</div>
+
+ <div id="timercontainer">
+  <div id="timer1" class="timer"><canvas id="timer1cv"></canvas></div>
+  <div id="timer2" class="timer"><canvas id="timer2cv"></canvas></div>
+ </div> <!-- div id="timercontainer"-->
+
+ <div id="delay" class="delay"><canvas id="delaycv"></canvas></div>
+ <div id="pauseinfo" class="pauseinfo" style="display:none;">PAUSE</div>
+
+ <div id="pausebtn" class="oparationbtn">PAUSE</div>
+ <div id="settingbtn" class="oparationbtn">SETTING</div>
+</div> <!-- div class="container" -->
+
+<!-- 設定画面 -->
+<div id="settingwindow" class="popupwindow">
+<p class="popuptitle">### Backgammon Clock and Score board App Settings ###</p>
+<table>
+<tr><td>Player name:</td><td>(L)<input type="text" id="playername1" value="Player1">
+                       &emsp;(R)<input type="text" id="playername2" value="Player2"></td></tr>
+<tr><td>Match length:</td><td>
+<select id="matchlength" name="matchlength">
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="5" selected>5</option>
+<option value="7">7</option>
+<option value="9">9</option>
+<option value="11">11</option>
+<option value="13">13</option>
+<option value="15">15</option>
+<option value="17">17</option>
+<option value="19">19</option>
+<option value="21">21</option>
+<option value="23">23</option>
+<option value="25">25</option>
+</select>
+(0 = Unlimited)
+</td></tr>
+<tr><td>Game time(min):</td><td>
+<select id="allotedtimemin" name="allotedtimemin">
+<option value="0">0</option>
+<option value="1">1 (for debug)</option>
+<option value="2">2 (1pt 2min)</option>
+<option value="4">4 (2pt 2min)</option>
+<option value="6">6 (3pt 2min)</option>
+<option value="10" selected>10 (5pt 2min)</option>
+<option value="14">14 (7pt 2min)</option>
+<option value="18">18 (9pt 2min)</option>
+<option value="22">22 (11pt 2min)</option>
+<option value="26">26 (13pt 2min)</option>
+<option value="30">30 (15pt 2min)</option>
+<option value="34">34 (17pt 2min)</option>
+<option value="38">38 (19pt 2min)</option>
+<option value="42">42 (21pt 2min)</option>
+<option value="46">46 (23pt 2min)</option>
+<option value="50">50 (25pt 2min)</option>
+<option value="3">3 (1pt 2.5min)</option>
+<option value="5">5 (2pt 2.5min)</option>
+<option value="8">8 (3pt 2.5min)</option>
+<option value="13">13 (5pt 2.5min)</option>
+<option value="18">18 (7pt 2.5min)</option>
+<option value="23">23 (9pt 2.5min)</option>
+<option value="28">28 (11pt 2.5min)</option>
+<option value="33">33 (13pt 2.5min)</option>
+<option value="38">38 (15pt 2.5min)</option>
+<option value="43">43 (17pt 2.5min)</option>
+<option value="48">48 (19pt 2.5min)</option>
+<option value="53">53 (21pt 2.5min)</option>
+<option value="58">58 (23pt 2.5min)</option>
+<option value="63">63 (25pt 2.5min)</option>
+</select>
+</td></tr>
+<tr><td>Delay(sec):</td><td>
+<select id="delaytime" name="delaytime">
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12" selected>12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+</select>
+</td></tr>
+<tr><td>Sound:</td><td>
+<label class="switch"><input type="checkbox" name="sound" checked><span class="slider round"></span></label>
+</td></tr>
+<tr id="tr_vibration"><td>Vibration:</td><td>
+<label class="switch"><input type="checkbox" name="vibration"><span class="slider round"></span></label>
+</td></tr>
+<tr><td>Show hour-hand:</td><td>
+<label class="switch"><input type="checkbox" name="hourhand" checked><span class="slider round"></span></label>
+</td></tr>
+<tr><td>Theme color:</td><td>
+  <span id="theme" class="segmented">
+    <label><input type="radio" name="theme" value="warm" checked><span class="label">Warm</span></label>
+    <label><input type="radio" name="theme" value="cool"><span class="label">Cool</span></label>
+    <label><input type="radio" name="theme" value="mono"><span class="label">Mono</span></label>
+  </span>
+</td></tr>
+</table>
+
+<input type="button" id="applybtn" class="oparationbtn" value="APPLY">
+<input type="button" id="cancelbtn" class="oparationbtn" value="CANCEL">
+<a href="help.html" target="bgclockhelp"><input type="button" id="helpbtn" class="oparationbtn" value="HELP"></a>
+</div>
+
+<!--  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/theme_color.js"></script>
+<script src="js/bgclock-analog.js"></script>
+</body>
+</html>
