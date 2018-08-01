@@ -70,6 +70,7 @@ $(function() {
   //クロックの場所がクリック(タップ)されたとき
   $("#timer1cv,#timer2cv").on('touchstart mousedown', function(e) {
     e.preventDefault(); // touchstart以降のイベントを発生させない
+    if (timeoutflg) { return; } //タイマ切れ状態のときは何もしない
     idname = $(this).attr("id");
     tappos = Number(idname.substr(5,1));
     tap_timerarea(tappos);
@@ -128,9 +129,7 @@ function set_initial_vars() {
     gamemodestr = "Match game to "+ matchlength;
   }
   $("#gamemode").text(gamemodestr);
-
-  delaytime = Number($("#delaytime").val());
-  $("#delay1,#delay2").text(("00"+delaytime).substr(-2));
+  delay = delaytime = Number($("#delaytime").val());
   allotedtime = Number($("#allotedtimemin").val()) * 60;
   timer = [0, allotedtime, allotedtime];
   disp_timer(1, timer[1]);
@@ -173,7 +172,6 @@ function tap_timerarea(tappos) {
   //クロック稼働中で相手側(グレーアウト側)をクリックしたときは何もしない
   //＝相手の手番、またはポーズのときは以下の処理を実行
   if (turn != tappos && pauseflg == false) { return; }
-  if (timeoutflg) { return; } //切れ負け状態のときは何もしない
 
   if (pauseflg) { //ポーズ状態のときはポーズを解除
     pause_out();
@@ -199,9 +197,6 @@ function tap_timerarea(tappos) {
       //左側を停止
       draw_timerframe(cv1,timer[1],"noteban");
       draw_timerframe(cv2,timer[2],"teban");
-      break;
-    default:
-      alert("wrong! turn="+turn+" tappos="+tappos);
       break;
   }
 }
@@ -242,6 +237,7 @@ function timeup_lose(turn) {
   sound("buzzer"); vibration("buzzer");
 }
 
+//テーマカラーを変更
 function change_theme(theme) {
   switch (theme) {
   case "warm":
@@ -261,7 +257,6 @@ function change_theme(theme) {
   draw_timerframe(cv1,timer[1],"pause");
   draw_timerframe(cv2,timer[2],"pause");
   draw_delayframe(cv3,delaytime,delay);
-
 }
 
 //音を鳴らす
@@ -299,6 +294,8 @@ function is_iOS() {
   ua = window.navigator.userAgent.toLowerCase();
   return (ua.indexOf('iphone') !== -1 || ua.indexOf('ipod') !== -1 || ua.indexOf('ipad') !== -1);
 }
+
+//canvasオブジェクト初期化
 function init_canvas() {
   cv1.canvas = document.getElementById("timer1cv");
   cv1.ctx = cv1.canvas.getContext('2d');
@@ -381,8 +378,6 @@ function draw_timerframe(cv,timer,stat){
   const sec = 59.999 - (timer % 60);
   const min = Math.floor(59.999 - (timer / 60));
   const hr = Math.floor(11.999 - (timer / 3600));
-
-//console.log(hr, min, sec, timer);
 
   //時針(短針)
   if (hourhandflg) { //trueのとき表示、falseのとき非表示
