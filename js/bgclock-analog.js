@@ -7,14 +7,16 @@
   var cfplayer = 0;
   var allotedtime = 600; //初期設定10分
   var timer = [0, allotedtime, allotedtime]; //引数を1,2として使うため、配列要素は3つ用意
-  var delaytime = 7; //for debug★
+  var delaytime = 12;
   var delay = delaytime;
   var turn = 0; //0=どちらでもない、1 or 2=どちらかがプレイ中
   var pauseflg = true; //pause状態で起動する
+  var timeoutflg = false;
   var clock; //タイマ用変数
-  var clockspd = 500; //msec どこまでの精度で時計を計測するか
+  var clockspd = 1000; //msec どこまでの精度で時計を計測するか
                        //1000の約数でないと時計の進みがいびつになり、使いにくい
                        //200msecだと残時間管理が精密になるがブラウザのCPU負荷が上がる
+  var gamemodestr = "Match game to "+ matchlength;
   var hourhandflg = true;
   var soundflg = true;
   var vibrationflg = false; //バイブレーションの初期設定は無効
@@ -34,32 +36,32 @@ $(function() {
   $("#applybtn").on('click', function(e) {
     set_initial_vars();
     $("#settingwindow").slideUp("normal");
-    $("#settingbtn,#pausebtn,#score1up,#score1dn,#score2up,#score2dn").removeClass("disable"); //ボタンクリックを有効化
+    $("#settingbtn,#pausebtn,#score1up,#score1dn,#score2up,#score2dn").removeClass("btndisable"); //ボタンクリックを有効化
   });
 
   //設定画面の[CANCEL] ボタンがクリックされたとき
   $("#cancelbtn").on('click', function(e) {
     $("#settingwindow").slideUp("normal"); //設定画面を消す
-    $("#settingbtn,#pausebtn,#score1up,#score1dn,#score2up,#score2dn").removeClass("disable"); //ボタンクリックを有効化
+    $("#settingbtn,#pausebtn,#score1up,#score1dn,#score2up,#score2dn").removeClass("btndisable"); //ボタンクリックを有効化
   });
 
   //メイン画面の[SETTING] ボタンがクリックされたとき
   $("#settingbtn").on('click', function(e) {
-    if ($(this).hasClass("disable")) { return; } //disableのときは何もしない
+    if ($(this).hasClass("btndisable")) { return; } //disableのときは何もしない
     topleft = winposition( $("#settingwindow") );
     $("#settingwindow").css(topleft).slideDown("normal"); //画面表示
-    $("#settingbtn,#pausebtn,#score1up,#score1dn,#score2up,#score2dn").addClass("disable"); //ボタンクリックを無効化
+    $("#settingbtn,#pausebtn,#score1up,#score1dn,#score2up,#score2dn").addClass("btndisable"); //ボタンクリックを無効化
   });
 
   //メイン画面の[PAUSE] ボタンがクリックされたとき
   $("#pausebtn").on('click', function(e) {
     if (turn == 0) { return; } //どちらの手番でもない場合は何もしない
-    if ($(this).hasClass("disable")) { return; } //disableのときは何もしない
+    if ($(this).hasClass("btndisable")) { return; } //disableのときは何もしない
     if (pauseflg) { //PAUSE -> PLAY
       pause_out();
       startTimer(turn); //現在の持ち時間からクロック再開
     } else { //PLAY -> PAUSE
-      pause_in();
+      pause_in("PAUSE");
       stopTimer();
     }
     sound("pause"); vibration("pause");
@@ -76,8 +78,14 @@ $(function() {
   //スコア操作のボタンがクリックされたとき
   $("#score1up,#score1dn,#score2up,#score2dn").on('click', function(e) {
     idname = $(this).attr("id");
-    if ($(this).hasClass("disable")) { return; } //disableのときは何もしない
+    if ($(this).hasClass("btndisable")) { return; } //disableのときは何もしない
     modify_score(idname);
+  });
+
+  //テーマが変更されたとき
+  $("#theme").on('change', function(e) {
+    theme = $("[name=theme]:checked").val();
+    change_theme(theme);
   });
 
 }); //close to $(function() {
@@ -102,7 +110,7 @@ function modify_score(idname) {
 
   //画面に反映
   $("#score"+player).text(score[player]);
-  $("#crawford").text(cfstr);
+  $("#gamemode").html(gamemodestr + "<br>" + cfstr);
 }
 
 //ポップアップ画面で設定した内容を反映
@@ -113,13 +121,14 @@ function set_initial_vars() {
   $("#score1").text(score[1]);
   $("#score2").text(score[2]);
   matchlength = $("#matchlength").val();
-  if (matchlength == 0) { //unlimited
-    $("#gamemode").text("Unlimited game");
-  } else {
-    $("#gamemode").text("Match game to "+ matchlength);
-  }
   crawford = 0;
-  $("#crawford").text("");
+  if (matchlength == 0) { //unlimited
+    gamemodestr = "Unlimited game";
+  } else {
+    gamemodestr = "Match game to "+ matchlength;
+  }
+  $("#gamemode").text(gamemodestr);
+
   delaytime = Number($("#delaytime").val());
   $("#delay1,#delay2").text(("00"+delaytime).substr(-2));
   allotedtime = Number($("#allotedtimemin").val()) * 60;
@@ -128,35 +137,20 @@ function set_initial_vars() {
   disp_timer(2, timer[2]);
   turn = 0; //手番をリセット
   theme = $("[name=theme]:checked").val();
-  switch (theme) {
-  case "warm":
-    $("#themecss").attr("href", "css/theme_warm.css");
-    themecolor = set_themecolor(theme);
-    break;
-  case "cool":
-    $("#themecss").attr("href", "css/theme_cool.css");
-    themecolor = set_themecolor(theme);
-    break;
-  case "mono":
-    $("#themecss").attr("href", "css/theme_mono.css");
-    themecolor = set_themecolor(theme);
-    break;
-  }
+  change_theme(theme);
   soundflg = $("[name=sound]").prop("checked");
   vibrationflg = $("[name=vibration]").prop("checked");
   hourhandflg = $("[name=hourhand]").prop("checked");
   $("#pauseinfo").removeClass("lose");
-  pause_in(); //PAUSE状態にする
-//  draw_timerframe(cv1,timer[1],"pause"); //クロックをPAUSE状態に
-//  draw_timerframe(cv2,timer[2],"pause");
-  draw_delayframe(cv3,delaytime,delaytime);
+  timeoutflg = false;
+  pause_in("PAUSE"); //PAUSE状態にする
 }
 
 //PLAY -> PAUSE
-function pause_in() {
+function pause_in(txt) {
   pauseflg = true;
-  $("#pauseinfo").text("PAUSE").show();
-  $("#settingbtn,#score1up,#score1dn,#score2up,#score2dn").removeClass("disable"); //ボタンクリックを有効化
+  $("#pauseinfo").text(txt).show();
+  $("#settingbtn,#score1up,#score1dn,#score2up,#score2dn").removeClass("btndisable"); //ボタンクリックを有効化
   draw_timerframe(cv1,timer[1],"pause"); //クロックをPAUSE状態に
   draw_timerframe(cv2,timer[2],"pause");
 }
@@ -165,7 +159,7 @@ function pause_in() {
 function pause_out() {
   pauseflg = false;
   $("#pauseinfo").hide();
-  $("#settingbtn,#score1up,#score1dn,#score2up,#score2dn").addClass("disable"); //ボタンクリックを無効化
+  $("#settingbtn,#score1up,#score1dn,#score2up,#score2dn").addClass("btndisable"); //ボタンクリックを無効化
 }
 
 //クロックを表示
@@ -179,6 +173,7 @@ function tap_timerarea(tappos) {
   //クロック稼働中で相手側(グレーアウト側)をクリックしたときは何もしない
   //＝相手の手番、またはポーズのときは以下の処理を実行
   if (turn != tappos && pauseflg == false) { return; }
+  if (timeoutflg) { return; } //切れ負け状態のときは何もしない
 
   if (pauseflg) { //ポーズ状態のときはポーズを解除
     pause_out();
@@ -202,8 +197,8 @@ function tap_timerarea(tappos) {
       break;
     case 2:
       //左側を停止
-      draw_timerframe(cv2,timer[2],"teban");
       draw_timerframe(cv1,timer[1],"noteban");
+      draw_timerframe(cv2,timer[2],"teban");
       break;
     default:
       alert("wrong! turn="+turn+" tappos="+tappos);
@@ -229,18 +224,44 @@ function countdown(turn) {
   } else {
     //保障時間切れ後
     timer[turn] -= clockspd / 1000;
-    if (timer < 0) { timer = 0; }
-    if (timer[turn] == 0) { timeup_lose(turn); return; } //切れ負け処理
+    if (timer[turn] < 0) { timer[turn] = 0; }
+    if (timer[turn] <= 0) { //切れ負け処理
+      timeoutflg = true;
+      timeup_lose(turn);
+      return;
+    }
     disp_timer(turn, timer[turn]);
   }
 }
 
 //切れ負け処理
 function timeup_lose(turn) {
-  $("#pauseinfo").text("TIME OUT").addClass("lose");
+  $("#pauseinfo").addClass("lose");
   stopTimer();
-  pause_in(); //ポーズ状態に遷移
+  pause_in("TIME OUT"); //ポーズ状態に遷移
   sound("buzzer"); vibration("buzzer");
+}
+
+function change_theme(theme) {
+  switch (theme) {
+  case "warm":
+    $("#themecss").attr("href", "css/theme_warm.css");
+    themecolor = set_themecolor(theme);
+    break;
+  case "cool":
+    $("#themecss").attr("href", "css/theme_cool.css");
+    themecolor = set_themecolor(theme);
+    break;
+  case "mono":
+    $("#themecss").attr("href", "css/theme_mono.css");
+    themecolor = set_themecolor(theme);
+    break;
+  }
+  //テーマに合わせてcanvasオブジェクトを再描画
+  draw_timerframe(cv1,timer[1],"pause");
+  draw_timerframe(cv2,timer[2],"pause");
+  draw_delayframe(cv3,delaytime,delay);
+
 }
 
 //音を鳴らす
@@ -361,7 +382,7 @@ function draw_timerframe(cv,timer,stat){
   const min = Math.floor(59.999 - (timer / 60));
   const hr = Math.floor(11.999 - (timer / 3600));
 
-console.log(hr, min, sec, timer);
+//console.log(hr, min, sec, timer);
 
   //時針(短針)
   if (hourhandflg) { //trueのとき表示、falseのとき非表示
