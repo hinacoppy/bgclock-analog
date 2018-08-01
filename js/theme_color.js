@@ -3,38 +3,38 @@ function set_themecolor(theme) {
   let themecolor = {};
   switch (theme) {
   case "warm":
-    themecolor.back_pause   = "#843";
+    themecolor.back_pause   = "#a73";
     themecolor.back_teban   = "#fff";
-    themecolor.back_noteban = "#433";
+    themecolor.back_noteban = "#865";
     themecolor.back_alert   = "#f00";
     themecolor.clock_border = "#302";
-    themecolor.dots_min     = "#bee";
+    themecolor.dots_min     = "#bbe";
     themecolor.dots_hour    = "#bcc";
-    themecolor.hour_hand    = "#b22";
+    themecolor.hour_hand    = "#722";
     themecolor.min_hand     = "#000";
-    themecolor.sec_hand     = "#e63";
+    themecolor.sec_hand     = "#943";
     themecolor.center_fill  = "#e60";
     themecolor.center_stroke= "#e63";
     themecolor.delay_remain = "#a24";
-    themecolor.delay_used   = "#fe8";
-    themecolor.delay_border = "#e5p";
+    themecolor.delay_used   = "#fee";
+    themecolor.delay_border = "#e54";
     break;
   case "cool":
-    themecolor.back_pause   = "#89b";
+    themecolor.back_pause   = "#9ac";
     themecolor.back_teban   = "#fff";
     themecolor.back_noteban = "#789";
     themecolor.back_alert   = "#f00";
     themecolor.clock_border = "#007";
-    themecolor.dots_min     = "#666";
-    themecolor.dots_hour    = "#699";
+    themecolor.dots_min     = "#333";
+    themecolor.dots_hour    = "#388";
     themecolor.hour_hand    = "#148";
     themecolor.min_hand     = "#000";
-    themecolor.sec_hand     = "#3b8";
+    themecolor.sec_hand     = "#26b";
     themecolor.center_fill  = "#376";
-    themecolor.center_stroke= "#3b8";
-    themecolor.delay_remain = "#2ae";
-    themecolor.delay_used   = "#def";
-    themecolor.delay_border = "#14c";
+    themecolor.center_stroke= "#26b";
+    themecolor.delay_remain = "#28e";
+    themecolor.delay_used   = "#eef";
+    themecolor.delay_border = "#25c";
     break;
   case "mono":
     themecolor.back_pause   = "#999";
@@ -47,11 +47,11 @@ function set_themecolor(theme) {
     themecolor.hour_hand    = "#222";
     themecolor.min_hand     = "#000";
     themecolor.sec_hand     = "#222";
-    themecolor.center_fill  = "#222";
+    themecolor.center_fill  = "#555";
     themecolor.center_stroke= "#222";
     themecolor.delay_remain = "#777";
     themecolor.delay_used   = "#fff";
-    themecolor.delay_border = "#888";
+    themecolor.delay_border = "#555";
     break;
   }
   return themecolor;

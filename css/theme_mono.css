@@ -16,8 +16,8 @@ body{
   color: #777;
 }
 .pauseinfo{
-  background-color: #888;
-  color: #bbb;
+  background-color: #666;
+  color: #ddd;
 }
 .lose{
   color: #f00;
@@ -27,26 +27,25 @@ body{
   background-color: #ddd;
 }
 .popupwindow{
-  border-color: #555;
+  border-color: #444;
 }
 .popuptitle{
-  background-color: #aaa;
-/*  color: #000;*/
+  background-color: #bbb;
 }
 /* toggle switch ----------------------------------------- */
 .slider {
-  background-color: #aaa;
+  background-color: #bbb;
 }
 .slider:before {
   background-color: #eee;
 }
 input:checked + .slider {
-  background-color: #444;
+  background-color: #666;
 }
 /* Segmented Control ----------------------------------------- */
 .segmented .label {
-  background-color: #555;
-  border-color: #333;
+  background-color: #666;
+  border-color: #777;
   color: #777;
 }
 .segmented input:checked + .label {

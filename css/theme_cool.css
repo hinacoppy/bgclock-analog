@@ -1,14 +1,14 @@
 /* theme color css */
 /* document outline ----------------------------------------- */
 body{
-  background-color: #def;
+  background-color: #eef;
 }
 .score{
   background-color: #ddf;
 }
 .btnenable{
-  background-color: #ade;
-  border-color: #0ef;
+  background-color: #adf;
+  border-color: #4ef;
 }
 .btndisable{
   background-color: #ddd;
