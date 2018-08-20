@@ -12,7 +12,7 @@ body{
 /* 以下すべて相対サイズにし、レスポンシブ対応可能にしておく */
 #container{
   display: grid; /* Grid Layout でコンテンツを配置 */
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 50vw 50vw;
   grid-template-rows: 10% 20% 60vh 10%;
   grid-template-areas:
      'player1 player2'
@@ -50,6 +50,7 @@ body{
 #delay{
   grid-area: 3/1/4/3;
   align-self: start; /* 上寄せ */
+  justify-self: center;
 }
 #pauseinfo{
   grid-area: 3/1/4/3;
@@ -94,8 +95,6 @@ body{
   height: 100%;
 }
 .delay{
-  justify-self: center;
-  align-self: start; /* 上寄せ */
   width: 20vh;
   height: 20vh;
 }

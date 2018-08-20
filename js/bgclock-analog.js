@@ -23,11 +23,10 @@
   var iosflg = is_iOS();
   if (iosflg) { $("#tr_vibration").css("display", "none"); } //iOSのときはバイブレーションの設定項目を表示しない
 
-  var theme = "warm";
+  var theme = "cool";
   var themecolor = set_themecolor(theme);
 
   var cv1 = {}, cv2 = {}, cv3 = {}; //canvasで使うための状態を保持するオブジェクト
-  init_canvas();
 
 //イベントハンドラの定義
 $(function() {
@@ -89,6 +88,11 @@ $(function() {
     change_theme(theme);
   });
 
+  //画面が表示されたときとリサイズ(スマホの縦横が変更)されたとき
+  $(window).on('load resize', function(){
+    init_canvas();
+  });
+
 }); //close to $(function() {
 
 //スコア操作ボタンによるスコア設定
@@ -132,8 +136,6 @@ function set_initial_vars() {
   delay = delaytime = Number($("#delaytime").val());
   allotedtime = Number($("#allotedtimemin").val()) * 60;
   timer = [0, allotedtime, allotedtime];
-  disp_timer(1, timer[1]);
-  disp_timer(2, timer[2]);
   turn = 0; //手番をリセット
   theme = $("[name=theme]:checked").val();
   change_theme(theme);
@@ -150,7 +152,7 @@ function pause_in(txt) {
   pauseflg = true;
   $("#pauseinfo").text(txt).show();
   $("#settingbtn,#score1up,#score1dn,#score2up,#score2dn").removeClass("btndisable"); //ボタンクリックを有効化
-  draw_timerframe(cv1,timer[1],"pause"); //クロックをPAUSE状態に
+  draw_timerframe(cv1,timer[1],"pause"); //クロックをPAUSE状態で表示
   draw_timerframe(cv2,timer[2],"pause");
 }
 
@@ -159,12 +161,10 @@ function pause_out() {
   pauseflg = false;
   $("#pauseinfo").hide();
   $("#settingbtn,#score1up,#score1dn,#score2up,#score2dn").addClass("btndisable"); //ボタンクリックを無効化
-}
-
-//クロックを表示
-function disp_timer(turn, time) {
-  cv = (turn==1 ? cv1 : cv2);
-  draw_timerframe(cv,time,"teban");
+  //クロックの稼働/停止を再表示
+  nonturn = turn==1 ? 2 : 1; //手番じゃないほう
+  draw_timerframe((turn==1 ? cv1:cv2),timer[turn],"teban");
+  draw_timerframe((turn==1 ? cv2:cv1),timer[nonturn],"noteban");
 }
 
 //クロック表示場所をクリック(タップ)したときの処理
@@ -187,18 +187,9 @@ function tap_timerarea(tappos) {
   startTimer(turn); //相手方のクロックをスタートさせる
 
   //クロックの稼働/停止を切替え
-  switch (turn) {
-    case 1:
-      //右側を停止
-      draw_timerframe(cv1,timer[1],"teban");
-      draw_timerframe(cv2,timer[2],"noteban");
-      break;
-    case 2:
-      //左側を停止
-      draw_timerframe(cv1,timer[1],"noteban");
-      draw_timerframe(cv2,timer[2],"teban");
-      break;
-  }
+  nonturn = turn==1 ? 2 : 1; //手番じゃないほう
+  draw_timerframe((turn==1 ? cv1:cv2),timer[turn],"teban");
+  draw_timerframe((turn==1 ? cv2:cv1),timer[nonturn],"noteban");
 }
 
 function startTimer(turn) {
@@ -225,7 +216,7 @@ function countdown(turn) {
       timeup_lose(turn);
       return;
     }
-    disp_timer(turn, timer[turn]);
+    draw_timerframe((turn==1 ? cv1:cv2),timer[turn],"teban"); //手番側の時計を進ませて表示
   }
 }
 
@@ -313,7 +304,7 @@ function init_canvas() {
   //canvasオブジェクトを描画
   draw_timerframe(cv1,timer[1],"pause");
   draw_timerframe(cv2,timer[2],"pause");
-  draw_delayframe(cv3,delaytime,delaytime);
+  draw_delayframe(cv3,delaytime,delay);
 }
 
 //タイマーを表示
@@ -324,6 +315,10 @@ function draw_timerframe(cv,timer,stat){
   const h = cv.canvas.height = s;
   const r = s/2; //半径
   const center = {x : r, y : r}; //中心
+  const lh = r*0.70; //時針長さ
+  const lm = r*0.80; //分針長さ
+  const ls = r*0.90; //秒針長さ
+  const lr = r*0.20; //針の後ろの長さ
 
   //背景
   switch(stat) {
@@ -386,9 +381,9 @@ function draw_timerframe(cv,timer,stat){
     ctx.lineWidth = 8;
     ctx.strokeStyle = themecolor.hour_hand;
     ctx.beginPath();
-    ctx.moveTo(-3,25);
-    ctx.lineTo(0,-(r-70));
-    ctx.lineTo(3,25);
+    ctx.moveTo(-3,lr);
+    ctx.lineTo(0,-lh);
+    ctx.lineTo(3,lr);
     ctx.stroke();
     ctx.restore();
   } // if (hourhandflg)
@@ -399,9 +394,9 @@ function draw_timerframe(cv,timer,stat){
   ctx.lineWidth = 4;
   ctx.strokeStyle = themecolor.min_hand;
   ctx.beginPath();
-  ctx.moveTo(-2,25);
-  ctx.lineTo(0,-(r-50));
-  ctx.lineTo(2,25);
+  ctx.moveTo(-2,lr);
+  ctx.lineTo(0,-lm);
+  ctx.lineTo(2,lr);
   ctx.stroke();
   ctx.restore();
 
@@ -411,8 +406,9 @@ function draw_timerframe(cv,timer,stat){
   ctx.strokeStyle = themecolor.sec_hand;
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.moveTo(0,30);
-  ctx.lineTo(0,-(r-20));
+  ctx.moveTo(0,lr);
+  ctx.lineTo(0,-ls);
+//  ctx.lineTo(0,lr); //分針時針と同じコードにするが、無駄なのでコメントアウト
   ctx.stroke();
   ctx.restore();
 
