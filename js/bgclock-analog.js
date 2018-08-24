@@ -309,8 +309,25 @@ function init_canvas() {
 
 //タイマーを表示
 function draw_timerframe(cv,timer,stat){
+  const s0 = (cv.width < cv.height) ? cv.width : cv.height; //小さいほう
+  switch(stat) {
+    case "pause":
+      s = s0 * 1.0;
+      backcolor = themecolor.back_pause;
+      break;
+    case "teban":
+      s = s0 * 1.2; //手番のときはクロックを大きく表示
+      backcolor = themecolor.back_teban;
+      break;
+    case "noteban":
+      s = s0 * 0.9;
+      backcolor = themecolor.back_noteban;
+      break;
+    default:
+      backcolor = themecolor.back_alert;
+  }
+
   const ctx = cv.ctx;
-  const s = (cv.width < cv.height) ? cv.width : cv.height; //小さいほう
   const w = cv.canvas.width = s;
   const h = cv.canvas.height = s;
   const r = s/2; //半径
@@ -321,19 +338,7 @@ function draw_timerframe(cv,timer,stat){
   const lr = r*0.20; //針の後ろの長さ
 
   //背景
-  switch(stat) {
-    case "pause":
-      ctx.fillStyle = themecolor.back_pause;
-      break;
-    case "teban":
-      ctx.fillStyle = themecolor.back_teban;
-      break;
-    case "noteban":
-      ctx.fillStyle = themecolor.back_noteban;
-      break;
-    default:
-      ctx.fillStyle = themecolor.back_alert;
-  }
+  ctx.fillStyle = backcolor;
   ctx.fillRect(0, 0, w, h);
 
   //外枠
