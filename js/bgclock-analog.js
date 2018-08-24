@@ -71,14 +71,13 @@ $(function() {
     e.preventDefault(); // touchstart以降のイベントを発生させない
     if (timeoutflg) { return; } //タイマ切れ状態のときは何もしない
     idname = $(this).attr("id");
-    tappos = Number(idname.substr(5,1));
-    tap_timerarea(tappos);
+    tap_timerarea(idname);
   });
 
   //スコア操作のボタンがクリックされたとき
   $("#score1up,#score1dn,#score2up,#score2dn").on('click', function(e) {
-    idname = $(this).attr("id");
     if ($(this).hasClass("btndisable")) { return; } //disableのときは何もしない
+    idname = $(this).attr("id");
     modify_score(idname);
   });
 
@@ -168,7 +167,8 @@ function pause_out() {
 }
 
 //クロック表示場所をクリック(タップ)したときの処理
-function tap_timerarea(tappos) {
+function tap_timerarea(idname) {
+  tappos = Number(idname.substr(5,1));
   //クロック稼働中で相手側(グレーアウト側)をクリックしたときは何もしない
   //＝相手の手番、またはポーズのときは以下の処理を実行
   if (turn != tappos && pauseflg == false) { return; }
