@@ -3,9 +3,9 @@ function set_themecolor(theme) {
   let themecolor = {};
   switch (theme) {
   case "warm":
-    themecolor.back_pause   = "#a73";
+    themecolor.back_pause   = "#c95";
     themecolor.back_teban   = "#fff";
-    themecolor.back_noteban = "#865";
+    themecolor.back_noteban = "#b84";
     themecolor.back_alert   = "#f00";
     themecolor.clock_border = "#302";
     themecolor.dots_min     = "#bbe";
@@ -20,9 +20,9 @@ function set_themecolor(theme) {
     themecolor.delay_border = "#e54";
     break;
   case "cool":
-    themecolor.back_pause   = "#9ac";
+    themecolor.back_pause   = "#abd";
     themecolor.back_teban   = "#fff";
-    themecolor.back_noteban = "#789";
+    themecolor.back_noteban = "#9ac";
     themecolor.back_alert   = "#f00";
     themecolor.clock_border = "#007";
     themecolor.dots_min     = "#333";
@@ -37,9 +37,9 @@ function set_themecolor(theme) {
     themecolor.delay_border = "#25c";
     break;
   case "mono":
-    themecolor.back_pause   = "#999";
+    themecolor.back_pause   = "#ccc";
     themecolor.back_teban   = "#fff";
-    themecolor.back_noteban = "#666";
+    themecolor.back_noteban = "#999";
     themecolor.back_alert   = "#f00";
     themecolor.clock_border = "#000";
     themecolor.dots_min     = "#333";

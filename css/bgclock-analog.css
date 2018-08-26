@@ -18,7 +18,7 @@ body{
      'player1 player2'
      'score1container score2container'
      'timer1 timer2'
-     'operationbtn operationbtn';
+     'operationbtn settingbtn';
   justify-items: stretch;
   align-items: stretch;
 }
@@ -63,14 +63,13 @@ body{
   grid-area: 4/1/5/3;
   justify-self: center;
   align-self: center;
-  margin-top: 1vh;
   z-index: 3;
 }
 #settingbtn{
-  grid-area: 4/2/5/3;
+  grid-area: settingbtn;
   justify-self: right;
   align-self: center;
-  margin-top: 1vh;
+  margin-right: 2vw;
 }
 /* object decorations ------------------------------------- */
 .infotext{
@@ -87,7 +86,7 @@ body{
   font-size: 7vw;
   text-align: center;
   border-radius: 20%;
-  margin: 0 1vh;
+  margin: 0 1vw;
 }
 .timer{
   display: flex;
@@ -97,7 +96,7 @@ body{
   height: 100%;
 }
 .delay{
-  width: 20vh;
+  width: 20vh; /* 正円で表示 */
   height: 20vh;
 }
 .updownbtn{
@@ -107,13 +106,14 @@ body{
   border-radius: 2.0em;
 }
 .oparationbtn{
-  font-size: 1.6vw;
-  padding: 0.5em 2em;
-  border: 2px solid;
+  font-size: 1.8vw;
+  padding: 0.5em 3em;
+  border: 4px solid;
   border-radius: 1.6em;
+  margin-top: 1vh;
 }
 .pauseinfo{
-  padding: 3vh 4vh;
+  padding: 3vh 5vw;
   font-size: 7vw;
 }
 .lose{
@@ -129,7 +129,7 @@ body{
   font-size: 100%;
 }
 .popupwindow{
-  border: 2px solid;
+  border: 3px solid;
   padding: 1em 2em;
   font-size: 1.8vw;
 }
