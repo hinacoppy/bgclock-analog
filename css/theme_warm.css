@@ -7,8 +7,8 @@ body{
   background-color: #fbb;
 }
 .btnenable{
-  background-color: #dec;
-  border-color: #b75;
+  background-color: #dc9;
+  border-color: #932;
 }
 .btndisable{
   background-color: #ddd;
@@ -16,7 +16,7 @@ body{
   color: #aaa;
 }
 .pauseinfo{
-  background-color: #ecb;
+  background-color: #fdd;
   color: #c67;
 }
 .lose{
@@ -24,10 +24,10 @@ body{
 }
 /* settingwindow decorations ------------------------------------- */
 #settingwindow{
-  background-color: #fda;
+  background-color: #ffd;
 }
 .popupwindow{
-  border-color: #b33;
+  border-color: #f22;
 }
 .popuptitle{
   background-color: #dc9;
@@ -46,7 +46,7 @@ input:checked + .slider {
 .segmented .label {
   background-color: #eee;
   border-color: #ccc;
-  color: #777;
+  color: #666;
 }
 .segmented input:checked + .label {
   background-color: #932;

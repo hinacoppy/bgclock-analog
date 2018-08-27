@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-  <meta name="description" content="Clock and Score board App for Backgammon player">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+  <meta name="description" content="Backgammon Clock and Score board App">
   <meta name="author" content="(C)hinacoppy 2018">
   <link rel="stylesheet" href="css/bgclock-analog.css">
   <link rel="stylesheet" href="css/theme_cool.css" id="themecss">
@@ -57,7 +57,7 @@
 
 <!-- 設定画面 -->
 <div id="settingwindow" class="popupwindow">
-<p class="popuptitle">### Backgammon Clock and Score board App Settings ###</p>
+<div class="popuptitle">### Backgammon Clock and Score board App Settings ###</div>
 <table>
 <tr><td>Player name:</td><td>(L)<input type="text" id="playername1" value="Player_L">
                        &emsp;(R)<input type="text" id="playername2" value="Player_R"></td></tr>
@@ -140,13 +140,13 @@
 </select>
 </td></tr>
 <tr><td>Sound:</td><td>
-<label class="switch"><input type="checkbox" name="sound" checked><span class="slider round"></span></label>
+<label class="switch"><input type="checkbox" name="sound" checked><span class="slider"></span></label>
 </td></tr>
 <tr id="tr_vibration"><td>Vibration:</td><td>
-<label class="switch"><input type="checkbox" name="vibration"><span class="slider round"></span></label>
+<label class="switch"><input type="checkbox" name="vibration"><span class="slider"></span></label>
 </td></tr>
 <tr><td>Show hour-hand:</td><td>
-<label class="switch"><input type="checkbox" name="hourhand" checked><span class="slider round"></span></label>
+<label class="switch"><input type="checkbox" name="hourhand" checked><span class="slider"></span></label>
 </td></tr>
 <tr><td>Theme color:</td><td>
   <span id="theme" class="segmented">

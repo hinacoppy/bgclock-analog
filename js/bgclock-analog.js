@@ -12,6 +12,7 @@
   var turn = 0; //0=どちらでもない、1 or 2=どちらかがプレイ中
   var pauseflg = true; //pause状態で起動する
   var timeoutflg = false;
+  var settingwindowflg = false;
   var clock; //タイマ用変数
   var clockspd = 1000; //msec どこまでの精度で時計を計測するか
                        //1000の約数でないと時計の進みがいびつになり、使いにくい
@@ -33,6 +34,7 @@ $(function() {
 
   //設定画面の[APPLY] ボタンがクリックされたとき
   $("#applybtn").on('click', function(e) {
+    settingwindowflg = false;
     set_initial_vars();
     $("#settingwindow").slideUp("normal");
     $("#settingbtn,#pausebtn,#score1up,#score1dn,#score2up,#score2dn").removeClass("btndisable"); //ボタンクリックを有効化
@@ -40,6 +42,7 @@ $(function() {
 
   //設定画面の[CANCEL] ボタンがクリックされたとき
   $("#cancelbtn").on('click', function(e) {
+    settingwindowflg = false;
     $("#settingwindow").slideUp("normal"); //設定画面を消す
     $("#settingbtn,#pausebtn,#score1up,#score1dn,#score2up,#score2dn").removeClass("btndisable"); //ボタンクリックを有効化
   });
@@ -47,6 +50,7 @@ $(function() {
   //メイン画面の[SETTING] ボタンがクリックされたとき
   $("#settingbtn").on('click', function(e) {
     if ($(this).hasClass("btndisable")) { return; } //disableのときは何もしない
+    settingwindowflg = true;
     topleft = winposition( $("#settingwindow") );
     $("#settingwindow").css(topleft).slideDown("normal"); //画面表示
     $("#settingbtn,#pausebtn,#score1up,#score1dn,#score2up,#score2dn").addClass("btndisable"); //ボタンクリックを無効化
@@ -69,14 +73,14 @@ $(function() {
   //クロックの場所がクリック(タップ)されたとき
   $("#timer1cv,#timer2cv").on('touchstart mousedown', function(e) {
     e.preventDefault(); // touchstart以降のイベントを発生させない
-    if (timeoutflg) { return; } //タイマ切れ状態のときは何もしない
+    if (timeoutflg || settingwindowflg) { return; } //タイマ切れ状態 or 設定画面のときは何もしない
     idname = $(this).attr("id");
     tap_timerarea(idname);
   });
 
   //スコア操作のボタンがクリックされたとき
   $("#score1up,#score1dn,#score2up,#score2dn").on('click', function(e) {
-    if ($(this).hasClass("btndisable")) { return; } //disableのときは何もしない
+    if ($(this).hasClass("btndisable") || settingwindowflg) { return; } //disableのときは何もしない
     idname = $(this).attr("id");
     modify_score(idname);
   });
@@ -210,12 +214,7 @@ function countdown(turn) {
   } else {
     //保障時間切れ後
     timer[turn] -= clockspd / 1000;
-    if (timer[turn] < 0) { timer[turn] = 0; }
-    if (timer[turn] <= 0) { //切れ負け処理
-      timeoutflg = true;
-      timeup_lose(turn);
-      return;
-    }
+    if (timer[turn] <= 0) { timeup_lose(turn); return; } //切れ負け処理
     draw_timerframe((turn==1 ? cv1:cv2),timer[turn],"teban"); //手番側の時計を進ませて表示
   }
 }
@@ -224,6 +223,7 @@ function countdown(turn) {
 function timeup_lose(turn) {
   $("#pauseinfo").addClass("lose");
   stopTimer();
+  timeoutflg = true;
   pause_in("TIME OUT"); //ポーズ状態に遷移
   sound("buzzer"); vibration("buzzer");
 }

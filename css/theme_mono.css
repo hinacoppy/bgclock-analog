@@ -1,23 +1,23 @@
 /* theme color css */
 /* document outline ----------------------------------------- */
 body{
-  background-color: #fff;
+  background-color: #eee;
 }
 .score{
-  background-color: #ddd;
+  background-color: #ccc;
 }
 .btnenable{
-  background-color: #999;
+  background-color: #bbb;
   border-color: #444;
 }
 .btndisable{
   background-color: #ddd;
   border-color: #aaa;
-  color: #777;
+  color: #aaa;
 }
 .pauseinfo{
-  background-color: #666;
-  color: #ddd;
+  background-color: #ddd;
+  color: #444;
 }
 .lose{
   color: #f00;
@@ -37,18 +37,18 @@ body{
   background-color: #bbb;
 }
 .slider:before {
-  background-color: #eee;
+  background-color: #fff;
 }
 input:checked + .slider {
-  background-color: #666;
+  background-color: #444;
 }
 /* Segmented Control ----------------------------------------- */
 .segmented .label {
-  background-color: #666;
-  border-color: #777;
-  color: #777;
+  background-color: #eee;
+  border-color: #ccc;
+  color: #666;
 }
 .segmented input:checked + .label {
-  background-color: #eee;
-  color: #000;
+  background-color: #444;
+  color: #fff;
 }

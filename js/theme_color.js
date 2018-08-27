@@ -5,9 +5,9 @@ function set_themecolor(theme) {
   case "warm":
     themecolor.back_pause   = "#c95";
     themecolor.back_teban   = "#fff";
-    themecolor.back_noteban = "#b84";
+    themecolor.back_noteban = "#ca6";
     themecolor.back_alert   = "#f00";
-    themecolor.clock_border = "#302";
+    themecolor.clock_border = "#322";
     themecolor.dots_min     = "#bbe";
     themecolor.dots_hour    = "#bcc";
     themecolor.hour_hand    = "#722";
@@ -15,14 +15,14 @@ function set_themecolor(theme) {
     themecolor.sec_hand     = "#943";
     themecolor.center_fill  = "#e60";
     themecolor.center_stroke= "#e63";
-    themecolor.delay_remain = "#a24";
+    themecolor.delay_remain = "#943";
     themecolor.delay_used   = "#fee";
-    themecolor.delay_border = "#e54";
+    themecolor.delay_border = "#722";
     break;
   case "cool":
     themecolor.back_pause   = "#abd";
     themecolor.back_teban   = "#fff";
-    themecolor.back_noteban = "#9ac";
+    themecolor.back_noteban = "#abe";
     themecolor.back_alert   = "#f00";
     themecolor.clock_border = "#007";
     themecolor.dots_min     = "#333";
@@ -32,25 +32,25 @@ function set_themecolor(theme) {
     themecolor.sec_hand     = "#26b";
     themecolor.center_fill  = "#376";
     themecolor.center_stroke= "#26b";
-    themecolor.delay_remain = "#28e";
-    themecolor.delay_used   = "#eef";
-    themecolor.delay_border = "#25c";
+    themecolor.delay_remain = "#26b";
+    themecolor.delay_used   = "#efe";
+    themecolor.delay_border = "#148";
     break;
   case "mono":
     themecolor.back_pause   = "#ccc";
     themecolor.back_teban   = "#fff";
-    themecolor.back_noteban = "#999";
+    themecolor.back_noteban = "#ccc";
     themecolor.back_alert   = "#f00";
     themecolor.clock_border = "#000";
     themecolor.dots_min     = "#333";
     themecolor.dots_hour    = "#111";
-    themecolor.hour_hand    = "#222";
+    themecolor.hour_hand    = "#555";
     themecolor.min_hand     = "#000";
-    themecolor.sec_hand     = "#222";
+    themecolor.sec_hand     = "#777";
     themecolor.center_fill  = "#555";
     themecolor.center_stroke= "#222";
     themecolor.delay_remain = "#777";
-    themecolor.delay_used   = "#fff";
+    themecolor.delay_used   = "#eee";
     themecolor.delay_border = "#555";
     break;
   }

@@ -1,14 +1,14 @@
 /* theme color css */
 /* document outline ----------------------------------------- */
 body{
-  background-color: #eef;
+  background-color: #efe;
 }
 .score{
   background-color: #ddf;
 }
 .btnenable{
   background-color: #adf;
-  border-color: #4ef;
+  border-color: #29f;
 }
 .btndisable{
   background-color: #ddd;
@@ -24,18 +24,17 @@ body{
 }
 /* settingwindow decorations ------------------------------------- */
 #settingwindow{
-  background-color: #ddf;
+  background-color: #dff;
 }
 .popupwindow{
   border-color: #00f;
 }
 .popuptitle{
-  background-color: #5bc;
-  color: #fff;
+  background-color: #adf;
 }
 /* toggle switch ----------------------------------------- */
 .slider {
-  background-color: #aaa;
+  background-color: #bbb;
 }
 .slider:before {
   background-color: #fff;
@@ -47,7 +46,7 @@ input:checked + .slider {
 .segmented .label {
   background-color: #eee;
   border-color: #ccc;
-  color: #777;
+  color: #666;
 }
 .segmented input:checked + .label {
   background-color: #29f;
