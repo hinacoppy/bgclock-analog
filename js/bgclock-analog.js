@@ -253,7 +253,10 @@ function change_theme(theme) {
 //音を鳴らす
 function sound(type) {
   if (soundflg) {
-    document.getElementById(type).play(); //音の種類は引数で指定
+    var audio = $('#'+type).get(0);
+    audio.load();
+    audio.play();
+//    document.getElementById(type).play(); //音の種類は引数で指定
   }
 }
 
