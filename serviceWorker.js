@@ -1,7 +1,7 @@
 /* serviceWorker.js */
 'use strict';
 
-const CACHE_NAME = "bgclock-analog-v20210623";
+const CACHE_NAME = "bgclock-analog-v2021112";
 const ORIGIN = (location.hostname == 'localhost') ? '' : location.protocol + '//' + location.hostname;
 
 const STATIC_FILES = [
@@ -22,7 +22,6 @@ const STATIC_FILES = [
   ORIGIN + '/bgclock-analog/sounds/decision1.mp3',
   ORIGIN + '/bgclock-analog/sounds/decision7.mp3',
   ORIGIN + '/bgclock-analog/sounds/warning2.mp3',
-  ORIGIN + '/bgclock-analog/webfonts/fa-solid-900.woff2',
   ORIGIN + '/js/jquery-3.6.0.min.js',
   ORIGIN + '/js/start_serviceWorker.js',
 ];
